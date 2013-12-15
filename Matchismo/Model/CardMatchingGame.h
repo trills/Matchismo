@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "Deck.h"
+#import "PlayingCardDeck.h"
+#import "PlayingCard.h"
 #import "Card.h"
 
 @interface CardMatchingGame : NSObject
@@ -17,7 +19,11 @@
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck;
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (Card *)cardAtIndex:(NSUInteger)index;
+- (void)addCardCount:(NSUInteger)addition;
+- (void)setMatchThreeOn:(BOOL)matchThreeon;
 
 @property (nonatomic, readonly) NSInteger score;
+@property (nonatomic, readonly) NSUInteger cardCount;
+@property (nonatomic, readonly) BOOL matchThreeOn;
 
 @end

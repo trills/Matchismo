@@ -14,6 +14,8 @@
 {
     int score = 0;
 
+    //int matchnumber = [otherCards count];
+ 
     if ([otherCards count] == 1) {
         PlayingCard *otherCard = [otherCards firstObject];
         if (otherCard.rank == self.rank) {
@@ -22,6 +24,11 @@
             score = 1;
         }
     }
+    
+
+    // in three card mode
+    
+    
 
     return score;
 }

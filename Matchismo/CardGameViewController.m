@@ -23,6 +23,13 @@
 
 @implementation CardGameViewController
 
+- (IBAction)RestartGame:(UIButton *)sender {
+    _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
+                                              usingDeck:[self createDeck]];
+    
+    [self updateUI];
+}
+
 
 - (Deck *)createDeck
 {
@@ -33,18 +40,25 @@
 {
     if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                                            usingDeck:[self createDeck]];
-    
+
     return _game;
+}
+
+- (IBAction)ThreeCardGame:(UISwitch *)sender
+{
+    //UISwitch *status = sender;
+    [self.game setMatchThreeOn:sender.on];
+    NSLog (@"%@", self.game.matchThreeOn ? @"On" : @"Off");
 }
 
 
 - (IBAction)flipCard:(UIButton *)sender
 {
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    [self.game addCardCount:1];
     [self.game chooseCardAtIndex:chosenButtonIndex];
-    [self updateUI];
     
-    //self.flipCount++;
+    [self updateUI];
 }
 
 - (void)updateUI
@@ -54,10 +68,11 @@
         Card *card = [self.game cardAtIndex:cardButtonIndex];
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
-        
+
         cardButton.enabled = !card.isMatched;
         self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
     }
+
 }
 
 - (NSString *)titleForCard:(Card *)card
@@ -67,7 +82,7 @@
 
 - (UIImage *)backgroundImageForCard:(Card *)card
 {
-    return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
+    return [UIImage imageNamed:card.isChosen ? @"blankcard" : @"sf"]; //adapted from Matt Swern's Flickr photo of the Golden Gate Bridge
 }
 
 
