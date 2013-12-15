@@ -81,27 +81,33 @@ static const int COST_TO_CHOOSE = 1;
             card.chosen = NO;
         } else {
             
-            // match against other chosen cards
-            /*
-             loop through all the cards.  collect the Chosen ones in a subarray
-             match against the chosen ones
-             unchoose everything after
-             
-            */
-            
             
             for (Card *otherCard in self.cards) {
                 
                 if (otherCard.isChosen && !otherCard.isMatched){
-                    //[chosenCards addObject:otherCard];
-                    //self.cardCount++;
-                    NSLog (@"cardCount=%d", self.cardCount);
-                    
+  
                     PlayingCard *poc = (PlayingCard *)otherCard;
+                    NSLog (@"cardCount=%d", self.cardCount);
                     NSLog (@"card content=%d%@", poc.rank, poc.suit);
 
+                    
+                    if (self.cardCount>=3){
+                        self.cardCount=0;
+                        
+                        for (Card *openCard in self.cards){
+                            if (openCard.isChosen && !openCard.isMatched){
+                                openCard.matched = YES;
+                                card.matched = YES;
+                            }
+                        }
+                        
+                        card.chosen = YES;
+                        break;
+                    }
+                    
+                    
 
-                    int matchScore = [card match:@[otherCard]];
+           /*       int matchScore = [card match:@[otherCard]];
                     if (matchScore) {
                         self.score += matchScore * MATCH_BONUS;
                         otherCard.matched = YES;
@@ -109,24 +115,24 @@ static const int COST_TO_CHOOSE = 1;
                     }
                     else {
                         self.score -= MISMATCH_PENALTY;
-                        otherCard.chosen = NO;
-                        card.chosen = NO;
-                    }
-                    
-                    
-                    
-                    if (self.cardCount>=3){
-                     
-                        self.cardCount=0;
+                        //otherCard.chosen = NO;
                         
-                        // unmatched cards should be unchosen
-                        card.chosen = YES;
+                        if (self.cardCount>=3){
+                            self.cardCount=0;
+                            
+                            for (Card *openCard in self.cards){
+                                if (openCard.isChosen && !openCard.isMatched){
+                                    openCard.Chosen = NO;
+                                }
+                            }
+                            
+                            card.chosen = YES;
+                            break;
+                        }
                         
-                    }
+                    } */
                     
-                    break;
-
-                }
+                                    }
             }            
             
             self.score -= COST_TO_CHOOSE;
