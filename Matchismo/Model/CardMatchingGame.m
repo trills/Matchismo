@@ -90,19 +90,13 @@ static const int COST_TO_CHOOSE = 1;
                     NSLog (@"cardCount=%d", self.cardCount);
                     NSLog (@"card content=%d%@", poc.rank, poc.suit);
 
+                    int matchScore = [card match:@[otherCard]];
+                    if (matchScore) {
+                        self.score += matchScore * MATCH_BONUS;
+                        //otherCard.matched = YES;
+                        //card.matched = YES;
                     
-                    if (self.cardCount>=3){
-                        self.cardCount=0;
-                        
-                        for (Card *openCard in self.cards){
-                            if (openCard.isChosen && !openCard.isMatched){
-                                openCard.matched = YES;
-                                card.matched = YES;
-                            }
-                        }
-                        
-                        card.chosen = YES;
-                        break;
+                        // if we don't do the matching now, this might be problematic for our conditional uptop!
                     }
                     
                     
@@ -136,7 +130,27 @@ static const int COST_TO_CHOOSE = 1;
             }            
             
             self.score -= COST_TO_CHOOSE;
-            card.chosen = YES;
+
+            
+            if (self.cardCount>=3){
+                self.cardCount=0;
+                
+                for (Card *openCard in self.cards){
+                    if (openCard.isChosen && !openCard.isMatched){
+                        openCard.matched = NO;
+                        openCard.chosen = NO;
+                        //card.matched = YES;
+                    }
+                }
+                
+                card.matched = NO;
+                card.chosen = NO;
+
+            }
+            else {
+                card.chosen = YES;
+            }
+            
             
         }
     
