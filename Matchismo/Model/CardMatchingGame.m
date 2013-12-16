@@ -14,6 +14,8 @@
 @property (nonatomic, readwrite) NSUInteger cardCount; // # of cards in our hand
 @property (nonatomic, readwrite) BOOL matchThreeOn; // match three cards instead of two
 
+@property (nonatomic, readwrite) BOOL matchSuccess; //
+
 @property (nonatomic, strong) NSMutableArray *cards; // of Card
 
 
@@ -93,40 +95,19 @@ static const int COST_TO_CHOOSE = 1;
                     int matchScore = [card match:@[otherCard]];
                     if (matchScore) {
                         self.score += matchScore * MATCH_BONUS;
-                        //otherCard.matched = YES;
-                        //card.matched = YES;
-                    
-                        // if we don't do the matching now, this might be problematic for our conditional uptop!
-                    }
-                    
-                    
+                        self.matchSuccess = TRUE;
 
-           /*       int matchScore = [card match:@[otherCard]];
-                    if (matchScore) {
-                        self.score += matchScore * MATCH_BONUS;
                         otherCard.matched = YES;
                         card.matched = YES;
+                        // if we don't do the matching now, this might be problematic for our conditional uptop!
                     }
                     else {
                         self.score -= MISMATCH_PENALTY;
-                        //otherCard.chosen = NO;
-                        
-                        if (self.cardCount>=3){
-                            self.cardCount=0;
-                            
-                            for (Card *openCard in self.cards){
-                                if (openCard.isChosen && !openCard.isMatched){
-                                    openCard.Chosen = NO;
-                                }
-                            }
-                            
-                            card.chosen = YES;
-                            break;
-                        }
-                        
-                    } */
-                    
-                                    }
+                        otherCard.matched = NO;
+                        card.matched = NO;
+                    }
+    
+                }
             }            
             
             self.score -= COST_TO_CHOOSE;
@@ -135,23 +116,42 @@ static const int COST_TO_CHOOSE = 1;
             if (self.cardCount>=3){
                 self.cardCount=0;
                 
-                for (Card *openCard in self.cards){
-                    if (openCard.isChosen && !openCard.isMatched){
-                        openCard.matched = NO;
-                        openCard.chosen = NO;
-                        //card.matched = YES;
+                // 1) as long as a match occurred, we should just "disable" all 3 cards
+                // 2) if no match occurred, we need to flip all 3 cards back
+                
+                if (self.matchSuccess) {
+                
+                    for (Card *openCard in self.cards){
+                        if (openCard.isChosen && !openCard.isMatched){
+                            openCard.matched = YES;
+                            openCard.chosen = YES;
+                        }
                     }
+                
+                    card.matched = YES;
+                    card.chosen = YES;
                 }
                 
-                card.matched = NO;
-                card.chosen = NO;
+                else {
+                
+                    for (Card *openCard in self.cards){
+                        if (openCard.isChosen && !openCard.isMatched){
+                            openCard.matched = NO;
+                            openCard.chosen = NO;
+                        }
+                    }
+                    card.matched = NO;
+                    card.chosen = NO;
+                }
+                
+                self.matchSuccess = FALSE;
 
             }
             else {
                 card.chosen = YES;
             }
             
-            
+            // we have to prevent accidental matches between games
         }
     
     
