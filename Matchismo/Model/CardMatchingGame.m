@@ -17,7 +17,7 @@
 @property (nonatomic, readwrite) BOOL matchSuccess; //
 
 @property (nonatomic, strong) NSMutableArray *cards; // of Card
-
+@property (nonatomic, strong) NSArray *chosenCards;
 
 @end
 
@@ -28,6 +28,13 @@
     if (!_cards) _cards = [[NSMutableArray alloc] init];
     return _cards;
 }
+
+- (NSArray *)chosenCards
+{
+    if (!_chosenCards) _chosenCards = [[NSArray alloc] init];
+    return _chosenCards;
+}
+
 
 - (NSUInteger)cardCount
 {
@@ -78,86 +85,70 @@ static const int COST_TO_CHOOSE = 1;
 {
     Card *card = [self cardAtIndex:index];
     
+    
     if (!card.isMatched) { // if false (card is matched) ==> card is not matched
         if (card.isChosen) {
             card.chosen = NO;
         } else {
             
+            // we match after picking every card because we need to know if the cards are matching between each other, not just between
+            // the latest card and all other cards.
+            
+            //let's build an array of chosencards
             
             for (Card *otherCard in self.cards) {
                 
                 if (otherCard.isChosen && !otherCard.isMatched){
-  
-                    PlayingCard *poc = (PlayingCard *)otherCard;
-                    NSLog (@"cardCount=%d", self.cardCount);
-                    NSLog (@"card content=%d%@", poc.rank, poc.suit);
-
-                    int matchScore = [card match:@[otherCard]];
+                    
+                    self.chosenCards = [self.chosenCards arrayByAddingObject:otherCard];
+                    
+                    int matchScore = [card match:self.chosenCards];
                     if (matchScore) {
                         self.score += matchScore * MATCH_BONUS;
                         self.matchSuccess = TRUE;
-
-                        otherCard.matched = YES;
-                        card.matched = YES;
-                        // if we don't do the matching now, this might be problematic for our conditional uptop!
                     }
                     else {
                         self.score -= MISMATCH_PENALTY;
-                        otherCard.matched = NO;
-                        card.matched = NO;
                     }
-    
+                    
                 }
-            }            
+            }
             
             self.score -= COST_TO_CHOOSE;
-
+            
+            
+            
             
             if (self.cardCount>=3){
                 self.cardCount=0;
                 
                 // 1) as long as a match occurred, we should just "disable" all 3 cards
                 // 2) if no match occurred, we need to flip all 3 cards back
-                
-                if (self.matchSuccess) {
-                
-                    for (Card *openCard in self.cards){
-                        if (openCard.isChosen && !openCard.isMatched){
-                            openCard.matched = YES;
-                            openCard.chosen = YES;
-                        }
-                    }
-                
-                    card.matched = YES;
-                    card.chosen = YES;
+                for (Card *openCard in self.chosenCards){
+                    
+                    openCard.matched = self.matchSuccess;
+                    openCard.chosen = self.matchSuccess;
+                    
                 }
                 
-                else {
-                
-                    for (Card *openCard in self.cards){
-                        if (openCard.isChosen && !openCard.isMatched){
-                            openCard.matched = NO;
-                            openCard.chosen = NO;
-                        }
-                    }
-                    card.matched = NO;
-                    card.chosen = NO;
-                }
+                card.matched = self.matchSuccess;
+                card.chosen = self.matchSuccess;
                 
                 self.matchSuccess = FALSE;
-
+                self.chosenCards = [[NSArray alloc] init];
+                
             }
             else {
                 card.chosen = YES;
             }
             
-            // we have to prevent accidental matches between games
         }
-    
-    
+        
+        
     }
     
 }
+
 
 
 @end

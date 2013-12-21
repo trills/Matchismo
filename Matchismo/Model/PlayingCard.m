@@ -14,19 +14,15 @@
 {
     int score = 0;
 
-    //int matchnumber = [otherCards count];
- 
-    if ([otherCards count] == 1) {
-        PlayingCard *otherCard = [otherCards firstObject];
-        if (otherCard.rank == self.rank) {
+    // in three card mode
+    for (PlayingCard *card in otherCards){
+        
+        if (card.rank == self.rank) {
             score = 4;
-        } else if ([otherCard.suit isEqualToString:self.suit]){
+        } else if ([card.suit isEqualToString:self.suit]){
             score = 1;
         }
     }
-    
-
-    // in three card mode
     
     
 
