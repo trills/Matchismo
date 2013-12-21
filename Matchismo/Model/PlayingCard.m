@@ -14,19 +14,7 @@
 {
     int score = 0;
 
-    
- /*   for (Card *c in otherCards){
-        
-        PlayingCard *card = [otherCards firstObject];
-        
-        if (card.rank == self.rank) {
-            score = 4;
-        } else if ([card.suit isEqualToString:self.suit]){
-            score = 1;
-        }
-    
-    } */
-    
+    //int matchnumber = [otherCards count];
  
     if ([otherCards count] == 1) {
         PlayingCard *otherCard = [otherCards firstObject];
@@ -39,6 +27,8 @@
     
 
     // in three card mode
+    
+    
 
     return score;
 }
