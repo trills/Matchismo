@@ -84,7 +84,7 @@ static const int COST_TO_CHOOSE = 1;
 - (void)chooseCardAtIndex:(NSUInteger)index
 {
     Card *card = [self cardAtIndex:index];
-    
+    int matchScore = 0;
     
     if (!card.isMatched) { // if false (card is matched) ==> card is not matched
         if (card.isChosen) {
@@ -102,20 +102,16 @@ static const int COST_TO_CHOOSE = 1;
                     
                     self.chosenCards = [self.chosenCards arrayByAddingObject:otherCard];
                     
-                    int matchScore = [card match:self.chosenCards];
+                    matchScore = [card match:self.chosenCards];
                     if (matchScore) {
-                        self.score += matchScore * MATCH_BONUS;
+
                         self.matchSuccess = TRUE;
-                    }
-                    else {
-                        self.score -= MISMATCH_PENALTY;
                     }
                     
                 }
             }
             
             self.score -= COST_TO_CHOOSE;
-            
             
             
             
@@ -133,6 +129,9 @@ static const int COST_TO_CHOOSE = 1;
                 
                 card.matched = self.matchSuccess;
                 card.chosen = self.matchSuccess;
+                
+                if (self.matchSuccess){ self.score += matchScore * MATCH_BONUS; }
+                else { self.score -= MISMATCH_PENALTY; }
                 
                 self.matchSuccess = FALSE;
                 self.chosenCards = [[NSArray alloc] init];

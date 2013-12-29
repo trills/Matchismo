@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Matchismo/Model/PlayingCard.m"
-            timestampString = "409312115.01574"
+            timestampString = "409967941.732635"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "+rankStrings"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "+validSuits"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,13 +90,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Matchismo/Model/PlayingCard.m"
-            timestampString = "409312115.01574"
+            timestampString = "409967941.732635"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "suit"
-            landmarkType = "19">
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "-contents"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

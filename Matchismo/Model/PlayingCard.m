@@ -13,18 +13,32 @@
 - (int)match:(NSArray *)otherCards
 {
     int score = 0;
+    int matchthree = FALSE;
 
     // in three card mode
     for (PlayingCard *card in otherCards){
         
         if (card.rank == self.rank) {
-            score = 4;
+            score += 4;
+            
+            if (matchthree == TRUE) {
+                // give more points;
+                score += 4;
+            }
+            matchthree = TRUE;
         } else if ([card.suit isEqualToString:self.suit]){
-            score = 1;
+            score += 1;
+            matchthree = TRUE;
+
+            if (matchthree == TRUE) {
+                // give more points;
+                score += 1;
+            }
+        
         }
     }
     
-    
+    matchthree = FALSE;
 
     return score;
 }
