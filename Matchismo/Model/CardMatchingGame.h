@@ -20,7 +20,7 @@
 - (void)chooseCardAtIndex:(NSUInteger)index;
 - (Card *)cardAtIndex:(NSUInteger)index;
 - (void)addCardCount:(NSUInteger)addition;
-- (void)setMatchThreeOn:(BOOL)matchThreeon;
+- (void)setMatchThree:(BOOL)matchThree;
 
 @property (nonatomic, readonly) NSInteger score;
 @property (nonatomic, readonly) NSUInteger cardCount;

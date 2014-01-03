@@ -12,7 +12,7 @@
 
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, readwrite) NSUInteger cardCount; // # of cards in our hand
-@property (nonatomic, readwrite) BOOL matchThreeOn; // match three cards instead of two
+@property (nonatomic, readwrite) BOOL matchThree; // match three cards instead of two
 
 @property (nonatomic, readwrite) BOOL matchSuccess; //
 
@@ -48,9 +48,9 @@
 }
 
 
-- (void)setMatchThreeOn:(BOOL)matchThreeOn
+- (void)setMatchThree:(BOOL)matchThree
 {
-    _matchThreeOn = matchThreeOn;
+    _matchThreeOn = matchThree;
 }
 
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck

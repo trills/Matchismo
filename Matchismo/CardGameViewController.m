@@ -18,6 +18,7 @@
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
+@property (weak, nonatomic) IBOutlet UISwitch *gameswitch;
 
 @end
 
@@ -27,6 +28,9 @@
     _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                               usingDeck:[self createDeck]];
     
+    // how do I update the UI for the switch?!
+    
+    [_game setMatchThree:FALSE];
     [self updateUI];
 }
 
@@ -40,14 +44,13 @@
 {
     if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                                            usingDeck:[self createDeck]];
-
+    [self.gameswitch setOn:YES animated:YES];
     return _game;
 }
 
 - (IBAction)ThreeCardGame:(UISwitch *)sender
 {
-    //UISwitch *status = sender;
-    [self.game setMatchThreeOn:sender.on];
+    [self.game setMatchThree:sender.on];
     NSLog (@"%@", self.game.matchThreeOn ? @"On" : @"Off");
 }
 
